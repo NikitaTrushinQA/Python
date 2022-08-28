@@ -37,9 +37,6 @@ def read_csv():
         return(result)
 
 read_csv()
-
-
-
 #def read_csv():
     #with open('data.csv') as file:
        # file = tuple(map(lambda x: x.strip().split(','), file))
