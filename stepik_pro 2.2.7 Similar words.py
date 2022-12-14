@@ -34,9 +34,9 @@
 
 
 word = input()
-list1 = []
-for i in range(len(word)):
-    if word[i] in 'ауоыиэяюёе':
+list1 = []                                               #vowels = ('а', 'у', 'о', 'ы', 'и', 'э', 'я', 'ю', 'ё', 'е')
+for i in range(len(word)):                               #pattern = [i for i, c in enumerate(input()) if c in vowels]
+    if word[i] in 'ауоыиэяюёе':                              
         list1.append(i)
 n = int(input())
 for j in range(n):
