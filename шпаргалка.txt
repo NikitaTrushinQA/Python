@@ -176,3 +176,13 @@ weibullvariate()	Возвращает случайное вещественно�
 %c	Дата и время	Tue Aug 16 21:30:00 1988 (en_US);             03.01.2019 23:18:32 (ru_RU)
 %x	Дата	08/16/88 (None); 08/16/1988 (en_US);                03.01.2019 (ru_RU)
 %X	Время	21:30:00
+
+пример:
+from datetime import date, time
+my_date = date(2021, 8, 10)
+my_time = time(7, 18, 34)
+print(my_date.strftime('%a %A %w %d %b %B %m %y %Y %H %I %p %M %S %f %z %Z %j %U %W %c %x %X'))
+print(my_time.strftime('%a %A %w %d %b %B %m %y %Y %H %I %p %M %S %f %z %Z %j %U %W %c %x %X'))
+выводит:
+Tue Tuesday 2 10 Aug August 08 21 2021 00 12 AM 00 00 000000   222 32 32 Tue Aug 10 00:00:00 2021 08/10/21 00:00:00
+Mon Monday 1 01 Jan January 01 00 1900 07 07 AM 18 34 000000   001 00 01 Mon Jan  1 07:18:34 1900 01/01/00 07:18:34
