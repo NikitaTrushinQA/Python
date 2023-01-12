@@ -186,3 +186,23 @@ print(my_time.strftime('%a %A %w %d %b %B %m %y %Y %H %I %p %M %S %f %z %Z %j %U
 выводит:
 Tue Tuesday 2 10 Aug August 08 21 2021 00 12 AM 00 00 000000   222 32 32 Tue Aug 10 00:00:00 2021 08/10/21 00:00:00
 Mon Monday 1 01 Jan January 01 00 1900 07 07 AM 18 34 000000   001 00 01 Mon Jan  1 07:18:34 1900 01/01/00 07:18:34
+
+                                                              Использование локализации
+Для того чтобы использовать конкретную локализацию (перевод на язык), нужно использовать модуль locale.
+Приведенный ниже код устанавливает русскую локализацию:
+from datetime import date
+import locale
+
+locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+my_date = date(2021, 8, 10)
+print(my_date.strftime("%A %d, %B %Y"))    # форматированный вывод даты в русской локализации
+
+и выводит:
+вторник 10, Август 2021
+
+
+Для установки английской локализации используется код:
+
+import locale
+
+locale.setlocale(locale.LC_ALL, 'en_EN.UTF-8')
