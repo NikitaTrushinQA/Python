@@ -206,3 +206,17 @@ print(my_date.strftime("%A %d, %B %Y"))    # форматированный вы
 import locale
 
 locale.setlocale(locale.LC_ALL, 'en_EN.UTF-8')
+                                                                    
+                                         isoformat() (Для того, чтобы получить строковое представление объектов типаdate и time в ISO формате)
+
+from datetime import date, time
+
+my_date = date(2021, 12, 31)
+my_time = time(21, 15, 17)
+
+print('Дата: ' + my_date.isoformat())
+print('Время: ' + my_time.isoformat())
+
+выводит:
+Дата: 2021-12-31
+Время: 21:15:17
