@@ -230,3 +230,14 @@ hour — час
 minute — минуты
 second — секунды
 microsecond — микросекунды
+                                       Методы combine(), date(), time()
+Сформировать новый объект типа datetime можно с помощью двух разных объектов, представляющих дату и время (date и time). Для этого используется метод combine().
+
+from datetime import date, time, datetime
+my_date = date(1992, 10, 6)
+my_time = time(10, 45, 17)
+my_datetime = datetime.combine(my_date, my_time)
+
+print(my_datetime)
+выводит:
+1992-10-06 10:45:17
