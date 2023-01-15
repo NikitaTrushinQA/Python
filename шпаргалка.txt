@@ -241,3 +241,20 @@ my_datetime = datetime.combine(my_date, my_time)
 print(my_datetime)
 выводит:
 1992-10-06 10:45:17
+
+Если, наоборот, нужно получить из даты-времени (тип datetime) по отдельности дату (тип date) и время (тип time), то используются методы date() и time() соответственно.
+Приведенный ниже код:
+
+from datetime import date, time, datetime
+my_datetime = datetime(2022, 10, 7, 14, 15, 45)
+my_date = my_datetime.date()                     # получаем только дату (тип date)
+my_time = my_datetime.time()                     # получаем только время (тип time)
+
+print(my_datetime, type(my_datetime))
+print(my_date, type(my_date))
+print(my_time, type(my_time))
+выводит:
+
+2022-10-07 14:15:45 <class 'datetime.datetime'>
+2022-10-07 <class 'datetime.date'>
+14:15:45 <class 'datetime.time'>
