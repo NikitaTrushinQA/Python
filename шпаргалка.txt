@@ -299,3 +299,23 @@ print(my_datetime)
 выводит:
 
 2021-10-13 08:10:23
+                                                    Форматирование даты-времени
+                                                    
+Чтобы преобразовать дату-время в строку нужного формата, следует воспользоваться методом strftime(), указав ему в качестве аргумента параметры форматирования.
+
+from datetime import datetime
+
+my_datetime = datetime(2021, 8, 10, 18, 20, 34)
+
+print(my_datetime)                                            # вывод в ISO формате
+print(my_datetime.strftime('%d.%m.%y --- %H::%M::%S'))
+print(my_datetime.strftime('%d/%m/%y'))
+print(my_datetime.strftime('%A %d, %B %Y'))
+print(my_datetime.strftime('%H:%M:%S'))
+выводит
+
+2021-08-10 18:20:34
+10.08.21 --- 18::20::34
+10/08/21
+Tuesday 10, August 2021
+18:20:34
