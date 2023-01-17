@@ -319,3 +319,27 @@ print(my_datetime.strftime('%H:%M:%S'))
 10/08/21
 Tuesday 10, August 2021
 18:20:34
+                                                 strptime() 
+strptime(), который преобразует строку (первый аргумент) в объект datetime согласно переданному формату (второй аргумент)
+Приведенный ниже код:
+
+from datetime import datetime
+
+datetime0 = datetime.strptime('10.08.2034 13:55:59', '%d.%m.%Y %H:%M:%S')
+datetime1 = datetime.strptime('10/08/21', '%d/%m/%y')
+datetime2 = datetime.strptime('Tuesday 10, August 2021', '%A %d, %B %Y')
+datetime3 = datetime.strptime('18.20.34', '%H.%M.%S')
+datetime4 = datetime.strptime('2021/08/10', '%Y/%m/%d')
+datetime5 = datetime.strptime('10.08.2021 (Tuesday, August)', '%d.%m.%Y (%A, %B)')
+datetime6 = datetime.strptime('Year: 2021, Month: 08, Day: 10, Hour: 18.', 'Year: %Y, Month: %m, Day: %d, Hour: %H.')
+
+print(datetime0, datetime1, datetime2, datetime3, datetime4, datetime5, datetime6, sep='\n')
+выводит:
+
+2034-08-10 13:55:59
+2021-08-10 00:00:00
+2021-08-10 00:00:00
+1900-01-01 18:20:34
+2021-08-10 00:00:00
+2021-08-10 00:00:00
+2021-08-10 18:00:00
