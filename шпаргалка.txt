@@ -377,3 +377,27 @@ delta1 = timedelta(days=50, seconds=27, microseconds=10, milliseconds=29000, min
 delta2 = timedelta(weeks=1, hours=23, minutes=61)                                                          ==>8 days, 0:01:00
 delta3 = timedelta(hours=25)                                                                               ==>1 day, 1:00:00
 delta4 = timedelta(minutes=300)                                                                            ==>5:00:00
+
+ у типа timedelta нет атрибутов hours и minutes, позволяющих получить количество часов и минут соответственно.
+ Достать часы и минуты можно так:
+ def hours_minutes(td):
+    return td.seconds // 3600, (td.seconds // 60) % 60
+Приведенный ниже код:
+
+from datetime import timedelta
+
+def hours_minutes(td):
+    return td.seconds // 3600, (td.seconds // 60) % 60
+
+delta = timedelta(days=7, seconds=125, minutes=10, hours=8, weeks=2)
+
+hours, minutes = hours_minutes(delta)
+
+print(delta)
+print(hours)
+print(minutes)
+выводит:
+
+21 days, 8:12:05
+8
+12
