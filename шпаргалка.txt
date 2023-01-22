@@ -414,3 +414,53 @@ delta3 = timedelta(minutes=24*7*59)
 print(delta1 == delta2)         #True
 print(delta1 != delta3)        #True
 print(delta1 < delta3)         #False
+
+               Сумма и разность временных интервалов
+from datetime import timedelta
+
+delta1 = timedelta(days=5) + timedelta(seconds=3600)  # 5 дней + 1 час
+delta2 = timedelta(days=5) - timedelta(seconds=3600)  # 5 дней - 1 час
+
+print(delta1)                      5 days, 1:00:00
+print(delta2)                      4 days, 23:00:00
+
+            Умножение временного интервала на число
+ from datetime import timedelta
+
+delta1 = 48 * timedelta(hours=1)
+delta2 = timedelta(weeks=1) * (3/7)
+
+print(delta1)                 2 days, 0:00:00
+print(delta2)                 3 days, 0:00:00
+
+            Деление временных интервалов на число
+from datetime import timedelta
+
+delta = timedelta(hours=1, minutes=6)
+delta1 = delta / 2
+delta2 = delta // 5
+
+print(delta1)             0:33:00
+print(delta2)             0:13:12
+
+          Деление временного интервала на временной интервал
+ помощью операторов / и // мы также можем делить один временной интервал (тип timedelta) на другой. По сути происходит деление общей длительности одного интервала на общую длительность другого интервала.
+
+Приведенный ниже код:
+
+from datetime import timedelta
+
+delta1 = timedelta(weeks=1) / timedelta(hours=5)       # обычное деление, результат float
+delta2 = timedelta(weeks=1) // timedelta(hours=5)      # целочисленное деление, результат int
+
+print(delta1)                     33.6
+print(delta2)                     33
+
+Мы также можем использовать оператор нахождения остатка от деления %, при этом остаток вычисляется как объект timedelta.
+from datetime import timedelta
+
+delta1 = timedelta(weeks=1) % timedelta(hours=5)         # 3 часа
+delta2 = timedelta(hours=1) % timedelta(minutes=7)       # 4 минуты
+
+print(delta1)                       3:00:00
+print(delta2)                       0:04:00
