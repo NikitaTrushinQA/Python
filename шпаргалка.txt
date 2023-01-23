@@ -464,3 +464,13 @@ delta2 = timedelta(hours=1) % timedelta(minutes=7)       # 4 минуты
 
 print(delta1)                       3:00:00
 print(delta2)                       0:04:00
+
+Рассмотрим следующую задачу: рабочая смена длится 7 часов 30 минут, сколько полных смен в 3-х сутках?
+from datetime import timedelta
+
+all_time = timedelta(days=3)
+smena = timedelta(hours=7, minutes=30)
+
+print(all_time // smena)           #9
+print(all_time % smena)           #4:30:00
+
