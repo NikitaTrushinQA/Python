@@ -28,5 +28,5 @@ while date1!=date(9999, 12, 31):
         d[date1.weekday()]=d.get(date1.weekday(), 0) + 1
 
 for keys,values in d.items():
-    #print(values)
+    print(values)
 
