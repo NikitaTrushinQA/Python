@@ -584,3 +584,23 @@ print('Before the sleep statement')
 time.sleep(0.7)
 print('After the sleep statement')
 год: 2021
+                  Функция monotonic()       monotonic_ns()
+Используемый таймер в функции monotonic() никогда не вернет при повторном вызове значение, которое будет меньше значения, полученного при предыдущем вызове. 
+Это позволяет избежать многих ошибок, а также неожиданного поведения.
+import time
+
+start_time = time.monotonic()
+for i in range(5): 
+    print(i)
+    time.sleep(0.5)
+end_time = time.monotonic()
+elapsed_time = end_time - start_time
+print(f'Время работы программы = {elapsed_time}')
+
+выводит (время работы программы может незначительно отличаться):
+0
+1
+2
+3
+4
+Время работы программы = 2.547000000020489
