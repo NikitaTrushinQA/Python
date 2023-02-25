@@ -1091,5 +1091,12 @@ Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su      Mo Tu We Th Fr Sa Su
 18 19 20 21 22 23 24      22 23 24 25 26 27 28      20 21 22 23 24 25 26
 25 26 27 28 29 30 31      29 30                     27 28 29 30 31
 
+Полезные ссылки по работе со временем:
+1)https://www.timeanddate.com/
+2)https://docs-python.ru/standart-library/modul-datetime-python/     #документация по модулю datetime
+3)https://docs-python.ru/standart-library/modul-zoneinfo-python/     #модуль zoneinfo в Python, база часовых поясов
+4)https://docs-python.ru/standart-library/modul-zoneinfo-python/     #Python pytz  Этот модуль обслуживает функции преобразования даты и времени и помогает         пользователям обслуживать международную клиентскую базу.
+5)https://pythonru.com/biblioteki/modul-dateutil                    #модуль dateutil Он помогает планировать, получать данные в определенное время или устанавливать временные метки.
+6)https://pythonim.ru/moduli/arrow-python                            #Модуль Arrow в Python – это библиотека, заменяющая datetime. Это позволяет легко создавать экземпляры даты и времени с учетом часового пояса.
 
                           
