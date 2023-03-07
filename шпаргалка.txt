@@ -1324,3 +1324,36 @@ with open('students.csv', 'w', encoding='utf-8', newline='') as file:
 "Тимур";"Гуев";11;"А"
 "Руслан";"Чаниев";9;"Б"
 "Роман";"Белых";10;"В"
+
+Запись данных с помощью DictWriter
+Для записи данных в csv файл также можно использовать DictWriter объект, который позволяет записывать содержимое словаря в файл.
+
+Приведенный ниже код:
+
+import csv
+
+data = [{'first_name': 'Тимур', 'second_name': 'Гуев', 'class_number': 11, 'class_letter': 'А'},
+        {'first_name': 'Руслан', 'second_name': 'Чаниев', 'class_number': 9, 'class_letter': 'Б'},
+        {'first_name': 'Роман', 'second_name': 'Белых', 'class_number': 10, 'class_letter': 'В'}]
+
+columns = ['first_name', 'second_name', 'class_number', 'class_letter']
+
+with open('students.csv', 'w', encoding='utf-8', newline='') as file:
+    writer = csv.DictWriter(file, fieldnames=columns, delimiter=';', quoting=csv.QUOTE_NONNUMERIC)
+    writer.writeheader()
+    for row in data:
+        writer.writerow(row)
+создает файл students.csv с содержимым:
+
+"first_name";"second_name";"class_number";"class_letter"
+"Тимур";"Гуев";11;"А"
+"Руслан";"Чаниев";9;"Б"
+"Роман";"Белых";10;"В"
+Мы также можем использовать метод writerows() объекта DictWriter для записи сразу нескольких строк. Таким образом вместо строк кода:
+
+for row in data:
+    writer.writerow(row)
+можно написать:
+
+writer.writerows(data)
+Обратите внимание на то, что ключи словарей, которые записываются в файл, должны совпадать с названиям полей, которые переданы в качестве аргумента fieldnames, иначе будет возникать ошибка ValueError.
