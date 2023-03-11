@@ -1357,3 +1357,296 @@ for row in data:
 
 writer.writerows(data)
 Обратите внимание на то, что ключи словарей, которые записываются в файл, должны совпадать с названиям полей, которые переданы в качестве аргумента fieldnames, иначе будет возникать ошибка ValueError.
+
+                                        ------------------работа с json файлами-------------------------------
+              модуль json
+Преобразование переменных программы (Python-объектов) в формат для хранения называется «сериализацией», а обратное преобразование — «десериализацией».
+В Python для сериализации и десериализации в формат json есть модуль, который так и называется — json.
+
+          Функция dumps()
+Для сериализации данных в json строку используется функция dumps() из модуля json. Для того, чтобы сериализовать данные с ее помощью, достаточно передать в нее аргументом любой сериализуемый Python объект. 
+
+Так как json — текстовый формат, то сериализация в него — это по сути преобразование данных в строку.
+
+import json
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+json_data = json.dumps(data)            # сериализуем словарь data в json строку
+
+print(type(json_data))          <class 'str'>
+print(json_data)               {"name": "Russia", "phone_code": 7, "capital": "Moscow", "currency": "RUB"}
+
+Обратите внимание на кавычки, независимо от того, что в Python-словаре мы использовали одинарные, в результирующую строку всегда попадают двойные.
+
+            Функция dump()
+В отличие от функции dumps(), которая преобразует (сериализует) Python объект в json строку, функция dump() записывает переданный Python объект в файл.
+
+
+import json
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+
+with open('contries.json', 'w') as file:
+    json.dump(data, file)
+    
+создает файл contries.json и сохраняет в него информацию из словаря data в json формате.
+Если открыть файл contries.json, мы увидим, что json выведен в одну строку без форматирования:
+{"name": "Russia", "phone_code": 7, "capital": "Moscow", "currency": "RUB"}
+
+               Необязательные аргументы indent, sort_keys и separators
+Функции записи dumps() и dump() имеют необязательные аргументы indent, sort_keys и separators, которые можно использовать для более удобного чтения человеком.
+
+Аргумент indent задает отступ от левого края. По умолчанию имеет значение None для более компактного представления без отступов.
+
+
+import json
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+
+json_data1 = json.dumps(data, indent=2)
+json_data2 = json.dumps(data, indent=10)
+
+print(json_data1)
+print(json_data2)
+выводит:
+
+{
+  "name": "Russia",
+  "phone_code": 7,
+  "capital": "Moscow",
+  "currency": "RUB"
+}
+{
+          "name": "Russia",
+          "phone_code": 7,
+          "capital": "Moscow",
+          "currency": "RUB"
+}
+Если значением indent является строка, то она используется в качестве отступа.
+
+import json
+
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+
+json_data = json.dumps(data, indent='++++')
+
+print(json_data)
+выводит:
+
+{
+++++"name": "Russia",
+++++"phone_code": 7,
+++++"capital": "Moscow",
+++++"currency": "RUB"
+}
+   Отступов также не будет, если значение аргумента indent равно 00, отрицательному числу или пустой строке.
+
+Аргумент sort_keys задает сортировку ключей в результирующем json. По умолчанию имеет значение False для более быстрого создания json.
+Если установить значение аргумента в True, то ключи будут отсортированы в алфавитном порядке, что особенно удобно, когда ключей много.
+
+import json
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+
+json_data1 = json.dumps(data, indent=3)
+json_data2 = json.dumps(data, indent=3, sort_keys=True)
+
+print(json_data1)
+print(json_data2)
+выводит:
+
+{
+   "name": "Russia",
+   "phone_code": 7,
+   "capital": "Moscow",
+   "currency": "RUB"
+}
+{
+   "capital": "Moscow",
+   "currency": "RUB",
+   "name": "Russia",
+   "phone_code": 7
+}
+Аргумент separators задает кортеж, состоящий из двух элементов (item_separator, key_separator), которые представляют разделители для элементов и ключей.
+По умолчанию аргумент имеет значение (', ', ': ').
+
+Приведенный ниже код:
+
+import json
+
+data = {'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+
+json_data = json.dumps(data, indent=3, separators=(';', ' = '))
+
+print(json_data)
+выводит:
+
+{
+   "name" = "Russia";
+   "phone_code" = 7;
+   "capital" = "Moscow";
+   "currency" = "RUB"
+}
+
+            Функция loads()
+Для десериализации данных нужно использовать функцию loads(). Ее аргумент — это строка с данными в формате json.
+
+
+import json
+json_data = '{"name": "Russia", "phone_code": 7, "capital": "Moscow", "currency": "RUB"}'
+
+data = json.loads(json_data)
+print(type(data))
+print(data)
+выводит:
+
+<class 'dict'>
+{'name': 'Russia', 'phone_code': 7, 'capital': 'Moscow', 'currency': 'RUB'}
+Как видно из примера, функция loads() десериализует json строку в словарь.
+В случае если строка для десериализации содержит данные с ошибкой, то модуль json не сможет правильно прочитать такую строку, и программа завершится с ошибкой.
+
+                    Функция load()
+В отличие от функции loads(), которая в качестве аргумента принимает строку с данными в формате json, функция load() принимает файловый объект и возвращает его десериализованное содержимое.
+
+Пусть файл data.json имеет следующее содержимое:
+
+{
+  "name": "Russia",
+  "phone_code": 7,
+  "capital": "Moscow",
+  "cities": ["Abakan", "Almetyevsk", "Anadyr", "Anapa", "Arkhangelsk", "Astrakhan"],
+  "currency": "RUB"
+}
+Приведенный ниже код:
+
+import json
+
+with open('data.json') as file:
+    data = json.load(file)                # передаем файловый объект
+    for key, value in data.items():
+        if type(value) == list:
+            print(f'{key}: {", ".join(value)}')
+        else:
+            print(f'{key}: {value}')
+читает содержимое data.json файла в словарь data и выводит его содержимое:
+
+name: Russia
+phone_code: 7
+capital: Moscow
+cities: Abakan, Almetyevsk, Anadyr, Anapa, Arkhangelsk, Astrakhan
+currency: RUB
+
+             Изменение типа данных(json<==>python)
+ Таблица конвертации типов данных Python в JSON:
+
+Python	JSON
+dict	object
+list, tuple	array
+str	string
+int, float	number
+True	true
+False	false
+None	null
+Таблица конвертации JSON в типы данных Python:
+
+JSON	         Python       
+object	dict
+array	list
+string	str
+number (int)	int
+number (real)	float
+true	True
+false	False
+null	None
+
+                   Ограничение по типам данных(json)
+ формат JSON нельзя записать словарь, у которого ключи – кортежи.
+
+Приведенный ниже код:
+
+import json
+
+data = {
+        'beegeek': 2018,
+        ('Timur', 'Guev'): 29,
+        ('Arthur', 'Kharisov'): 20,
+        'stepik': 2013
+       }
+
+json_data = json.dumps(data)        # преобразуем dict в json
+
+print(json_data)
+генерирует ошибку:
+
+TypeError: keys must be str, int, float, bool or None, not tuple
+С помощью необязательного аргумента skipkeys можно игнорировать подобные ключи.
+
+Приведенный ниже код:
+
+import json
+
+data = {
+        'beegeek': 2018,
+        ('Timur', 'Guev'): 29,
+        ('Arthur', 'Kharisov'): 20,
+        'stepik': 2013
+       }
+
+json_data = json.dumps(data, skipkeys=True)        # преобразуем dict в json
+
+print(json_data)
+выводит:
+
+{"beegeek": 2018, "stepik": 2013}
+Кроме того, в JSON ключами словаря могут быть только строки. Но, если в словаре Python использовались числа, булевы значения или None, то ошибки не будет, вместо этого они будут преобразованы в строки.
+
+Приведенный ниже код:
+
+import json
+
+data = {1: 'Timur', False: 'Arthur', None: 'Ruslan'}
+json_data = json.dumps(data)
+
+print(json_data)
+выводит:
+
+{"1": "Timur", "false": "Arthur", "null": "Ruslan"}
+
+                          Кириллические символы в json
+import json
+data = {'firstName': 'Тимур', 'lastName': 'Гуев'}
+s = json.dumps(data)
+print(s)
+выводит:
+
+{"firstName": "\u0422\u0438\u043c\u0443\u0440", "lastName": "\u0413\u0443\u0435\u0432"}
+Результат, скорее всего, будет неожиданным. Каждая буква из строк Тимур и Гуев будет заменена на ее код. Эти коды стандартны, и код для каждой из букв индивидуален. Например. 0438 — код буквы и.  А на этой странице можно посмотреть полное описание этого кода и символа.
+
+Обратное преобразование из строки в словарь вернет закодированное значение в первоначальный вид.
+
+Приведенный ниже код:
+
+import json
+
+data = {'firstName': 'Тимур', 'lastName': 'Гуев'}
+s = json.dumps(data)
+print(s)
+result = json.loads(s)
+print(result)
+выводит:
+
+{"firstName": "\u0422\u0438\u043c\u0443\u0440", "lastName": "\u0413\u0443\u0435\u0432"}
+{'firstName': 'Тимур', 'lastName': 'Гуев'}
+Благодаря стандартным кодам, символы будут прочитаны и преобразованы в нужный вид любой программой на любом языке программирования.
+
+С помощью необязательного аргумента ensure_ascii функций dumps() и dump() можно отказаться от такого кодирования.
+
+Приведенный ниже код:
+
+import json
+
+data = {'firstName': 'Тимур', 'lastName': 'Гуев'}
+s = json.dumps(data, ensure_ascii=False)
+print(s)
+result = json.loads(s)
+print(result)
+выводит:
+
+{"firstName": "Тимур", "lastName": "Гуев"}
+{'firstName': 'Тимур', 'lastName': 'Гуев'}
