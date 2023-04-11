@@ -2852,3 +2852,241 @@ print(f'Словарь: {average_time(timur_dct , time_dict)} наносекун
 Изменяемость (mutability)	                 ❌	                ✔️
 Потребление памяти (memory usage)	         ✔️	                 ❌
 Производительность (performance)	         ✔️	                 ❌
+
+---------------------------------------------------------------Тип данных defaultdict---------------------------------------------------------------------
+Тип defaultdict ведет себя почти так же, как обычный словарь dict, но если мы попытаемся получить доступ (или изменить значение) по несуществующему ключу,
+то defaultdict автоматически создаст ключ и сгенерирует для него значение по умолчанию.
+Такое поведение делает defaultdict удобным вариантом обработки недостающих ключей в словарях.
+
+Для того чтобы не возникало ошибки при обращении по несуществующему ключу с помощью квадратных скобок, достаточно использовать альтернативный вариант словаря – defaultdict.
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+info = defaultdict(int)       # создаем словарь со значением по умолчанию 0
+
+info['name'] = 'Timur'
+info['age'] = 29
+info['job'] = 'Teacher'
+
+print(info['salary'])
+print(info)
+выводит:
+
+0
+defaultdict(<class 'int'>, {'name': 'Timur', 'age': 29, 'job': 'Teacher', 'salary': 0})
+Функция defaultdict() принимает в качестве аргумента тип элемента по умолчанию. Таким образом, для ключей, к которым происходит обращение, словарь defaultdict поставит в соответствие дефолтный элемент данного типа:
+
+для int – число 0
+для float – число 0.0
+для bool – значение False
+для str – пустая строка ''
+для list – пустой список []
+для tuple – пустой кортеж ()
+для set – пустое множество set()
+для dict – пустой словарь {}
+Помимо первого аргумента – типа элемента по умолчанию – мы можем передать второй аргумент: словарь, на основании которого будет создан defaultdict.
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+info = defaultdict(int, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+
+print(info['name'])
+print(info['salary'])
+print(info)
+выводит:
+
+Timur
+0
+defaultdict(<class 'int'>, {'name': 'Timur', 'age': 29, 'job': 'Teacher', 'salary': 0})
+Также допустимы все способы, которые мы используем при создании обычных словарей, а именно передача именованных аргументов или итерируемого объекта,
+содержащего пары ключ-значение (например, список кортежей).
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+info1 = defaultdict(int, name='Timur', age=29, job='Teacher')
+info2 = defaultdict(int, [('name', 'Timur'), ('age', 29), ('job', 'Teacher')])
+
+print(info1)
+print(info2)
+выводит:
+
+defaultdict(<class 'int'>, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+defaultdict(<class 'int'>, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+Обратите внимание, что при создании словаря defaultdict мы можем указать только именованные аргументы,
+но не можем указать только итерируемый объект с парами ключ-значение (или словарь).
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+info = defaultdict(name='Timur', age=29, job='Teacher')
+
+print(info)
+выводит: 
+
+defaultdict(None, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+В то время как следующий код:
+
+from collections import defaultdict
+
+info = defaultdict([('name', 'Timur'), ('age', 29), ('job', 'Teacher')])
+
+print(info)
+приводит к возникновению ошибки, так как в качестве первого аргумента должен быть указан тип элемента по умолчанию, а не итерируемый объект с парами ключ-значение (или словарь).
+
+Рассмотрим задачу: пусть задан список чисел numbers, в котором некоторые числа встречаются несколько раз.
+Нужно узнать, сколько именно раз встречается каждое из чисел.
+С помощью типа данных defaultdict:
+
+from collections import defaultdict
+
+numbers = [9, 8, 32, 1, 10, 1, 10, 23, 1, 4, 10, 4, 2, 2, 2, 2, 1, 10, 1, 2, 2, 32, 23, 23]
+result = defaultdict(int)
+for num in numbers:
+    result[num] += 1
+
+Тип данных defaultdict часто используют в связке с пустым списком в качестве значения по умолчанию, чтобы начинать добавление элементов без лишнего кода.
+
+Приведенный ниже код работает так, как полагается:
+
+from collections import defaultdict
+
+my_dict = defaultdict(list)
+
+for i in range(7):
+    my_dict[i].append(i)
+
+for key in my_dict:
+    print(key, my_dict[key])
+и выводит:
+
+0 [0]
+1 [1]
+2 [2]
+3 [3]
+4 [4]
+5 [5]
+6 [6]
+При использовании defaultdict нет необходимости ни проверять наличие соответствующих ключей в словаре, ни создавать предварительно пустые списки.
+
+          Когда использовать defaultdict?
+Приведем несколько рекомендаций, когда удобно использовать defaultdict, вместо dict:
+1)Если ваш код в значительной степени основан на словарях и вы все время имеете дело с отсутствующими ключами, вам следует подумать об использовании defaultdict,
+    а не обычного dict
+2)Если элементы вашего словаря необходимо инициализировать некоторым значением по умолчанию, вам следует подумать об использовании defaultdict, вместо dict
+3)Если ваш код использует словари для агрегирования, накопления, подсчета или группировки значений, вам следует подумать об использовании defaultdict, вместо dict
+
+           Примечания
+Примечание 1. Тип defaultdict наследуется от типа dict.
+
+Приведенный ниже код:
+from collections import defaultdict
+print(issubclass(defaultdict, dict))
+выводит:
+True
+Таким образом, все методы доступные для обычных словарей (тип dict), также доступны и для defaultdict словарей.
+
+Примечание 2. Мы можем сравнивать обычные словари (тип dict) и defaultdict словари.
+
+Приведенный ниже код:
+
+from collections import defaultdict
+info1 = {'name': 'Timur', 'age': 29, 'job': 'Teacher'}
+info2 = defaultdict(int, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+print(info1 == info2)
+
+выводит:
+True
+
+римечание 3. При создании defaultdict словаря можно указывать не только тип данных для значений по умолчанию, но и любую функцию, не принимающую аргументов и возвращающую некоторое дефолтное значение.
+
+Приведенный ниже код (передаем функцию, объявленную с помощью def):
+
+from collections import defaultdict
+
+def get_default():
+    return 69
+
+info = defaultdict(get_default, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+
+print(info['name'])
+print(info['salary'])
+выводит:
+
+Timur
+69
+ Приведенный ниже код (передаем функцию, объявленную с помощью lambda):
+
+from collections import defaultdict
+
+info = defaultdict(lambda: '1000000$', {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+
+print(info['name'])
+print(info['salary'])
+выводит:
+
+Timur
+1000000$
+Обратите внимание, что передаваемая функция не должна принимать никаких аргументов.
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+def get_default(x):
+    return 2 * x
+
+info = defaultdict(get_default, {'name': 'Timur', 'age': 29, 'job': 'Teacher'})
+
+print(info['name'])
+print(info['salary'])
+приводит к возникновению ошибки.
+
+Примечание 4. Если создать экземпляр defaultdict словаря без указания default_factory (значения по умолчанию для отсутствующих ключей),
+то поведение defaultdict будет таким же, как и у обычного словаря (тип dict).
+
+Приведенный ниже код:
+from collections import defaultdict
+data = defaultdict()
+print(data['salary'])
+приводит к возникновению ошибки KeyError.
+
+Аналогичное поведение будет, если в качестве default_factory передать значение None.
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+data = defaultdict(None)
+
+print(data['salary'])
+также приводит к возникновению ошибки KeyError.
+
+   Значение None является значением по умолчанию для default_factory.
+
+Примечание 5. Функцию, которая возвращает значение по умолчанию для отсутствующих ключей, можно явно менять через атрибут default_factory.
+
+Приведенный ниже код:
+
+from collections import defaultdict
+
+data = defaultdict(int)
+print(data['salary1'])
+
+data.default_factory = list
+print(data['salary2'])
+
+data.default_factory = float
+print(data['salary3'])
+выводит:
+
+0
+[]
+0.0
+Примечание 6. Тип defaultdict работает быстрее чем использование методов setdefault() и get() обычного словаря (тип dict).
