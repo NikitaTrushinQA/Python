@@ -3090,3 +3090,322 @@ print(data['salary3'])
 []
 0.0
 Примечание 6. Тип defaultdict работает быстрее чем использование методов setdefault() и get() обычного словаря (тип dict).
+
+---------------------------------------------------------------Тип данных OrderedDict---------------------------------------------------------------------------
+Тип OrderedDict является подтипом типа dict, сохраняющий порядок, в котором пары "ключ-значение" вставляются в словарь. Когда мы перебираем объект типа OrderedDict, его элементы перебираются в исходном порядке. Если мы обновим значение существующего ключа, то порядок останется неизменным. Если мы удалим элемент и вставим его снова, то этот элемент будет добавлен в конец словаря.
+
+Тип OrderedDict будучи подтипом dict наследует все методы, предоставляемые обычным словарем. При этом в OrderedDict также есть дополнительные методы, о которых мы поговорим ниже.
+
+В отличие от dict, тип OrderedDict не является встроенным типом и для использования его необходимо импортировать из модуля collections.
+
+
+from collections import OrderedDict
+numbers = OrderedDict()
+numbers['one'] = 1
+numbers['two'] = 2
+numbers['three'] = 3
+
+print(numbers)
+выводит:
+
+OrderedDict([('one', 1), ('two', 2), ('three', 3)])
+Как и defaultdict, эти словари можно создавать любым из доступных способов, как и обычные словари:
+
+from collections import OrderedDict
+
+numbers1 = OrderedDict({'one': 1, 'two': 2, 'three': 3})
+numbers2 = OrderedDict([('one', 1), ('two', 2), ('three', 3)])
+numbers3 = OrderedDict(one=1, two=2, three=3)
+---------------------------Изменение OrderedDict словаря
+Тип OrderedDict является изменяемым. Мы можем вставлять новые элементы, обновлять и удалять существующие элементы. Если мы вставим новый элемент в существующий OrderedDict словарь, то этот элемент добавится в конец словаря.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+
+print(numbers)
+
+numbers['four'] = 4
+
+print(numbers)
+выводит:
+
+OrderedDict([('one', 1), ('two', 2), ('three', 3)])
+OrderedDict([('one', 1), ('two', 2), ('three', 3), ('four', 4)])
+Если мы удалим элемент из существующего OrderedDict словаря и снова вставим его, то он будет помещен в конец словаря.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+print(numbers)
+
+del numbers['one']
+
+print(numbers)
+numbers['one'] = 1
+print(numbers)
+выводит:
+
+OrderedDict([('one', 1), ('two', 2), ('three', 3)])
+OrderedDict([('two', 2), ('three', 3)])
+OrderedDict([('two', 2), ('three', 3), ('one', 1)])
+Если мы обновляем значение по существующему ключу, то ключ сохраняет свою позицию.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+print(numbers)
+
+numbers['one'] = 1.0
+print(numbers)
+
+numbers.update(two=2.0)
+print(numbers)
+выводит:
+
+OrderedDict([('one', 1), ('two', 2), ('three', 3)])
+OrderedDict([('one', 1.0), ('two', 2), ('three', 3)])
+OrderedDict([('one', 1.0), ('two', 2.0), ('three', 3)])
+Обновить значение по нужному ключу можно либо с помощью квадратных скобок, либо с помощью словарного метода update().
+
+-------------------------------------------Итерирование по OrderedDict словарю
+Доступ к элементам и итерирование по OrderedDict словарям работает так же, как и у обычных словарей. Мы можем перебирать ключи напрямую или можем использовать словарные методы items(), keys() и values().
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+
+# обращение по ключу
+print(numbers['one'])
+print(numbers['three'])
+
+print()
+
+# перебор ключей напрямую
+for key in numbers:
+    print(key, '->', numbers[key])
+
+print()
+
+# перебор пар (ключ, значение) через метод
+for key, value in numbers.items():
+    print(key, '->', value)
+
+print()
+
+# перебор ключей через метод
+for key in numbers.keys():
+    print(key, '->', numbers[key])
+
+print()
+
+# перебор значений через метод
+for value in numbers.values():
+    print(value)
+выводит:
+
+1
+3
+
+one -> 1
+two -> 2
+three -> 3
+
+one -> 1
+two -> 2
+three -> 3
+
+one -> 1
+two -> 2
+three -> 3
+
+1
+2
+3
+При итерировании по OrderedDict словарям мы можем использовать встроенную функцию reversed().
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+
+# перебор ключей напрямую
+for key in reversed(numbers):
+    print(key, '->', numbers[key])
+
+print()
+
+# перебор пар (ключ, значение) через метод
+for key, value in reversed(numbers.items()):
+    print(key, '->', value)
+
+print()
+
+# перебор ключей через метод
+for key in reversed(numbers.keys()):
+    print(key, '->', numbers[key])
+
+print()
+
+# перебор значений через метод
+for value in reversed(numbers.values()):
+    print(value)
+выводит:
+
+three -> 3
+two -> 2
+one -> 1
+
+three -> 3
+two -> 2
+one -> 1
+
+three -> 3
+two -> 2
+one -> 1
+
+3
+2
+1
+    Обычные словари (тип dict) начиная с Python 3.8 также поддерживают использование встроенной функции reversed().
+
+------------------------------------------------Методы popitem() и move_to_end()
+OrderedDict словари имеют два полезных метода:
+
+метод move_to_end() позволяет переместить существующий элемент либо в конец, либо в начало словаря
+метод popitem() позволяет удалить и вернуть элемент либо из конца, либо из начала словаря
+Метод move_to_end()
+Методу move_to_end() можно передать два аргумента:
+
+key (обязательный аргумент) – ключ, который идентифицирует перемещаемый элемент
+
+last (необязательный аргумент) – логическое значение (тип bool), которое определяет, в какой конец словаря мы перемещаем элемент, значение True (по умолчанию) перемещает элемент в конец, значение False – в начало
+
+   Если при вызове метода move_to_end() переданный ключ отсутствует в словаре, то возникает ошибка KeyError.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+print(numbers)
+
+numbers.move_to_end('one')       # last=True
+print(numbers)
+
+numbers.move_to_end('three', last=False)       # last=False
+print(numbers)
+выводит:
+
+OrderedDict([('one', 1), ('two', 2), ('three', 3)])
+OrderedDict([('two', 2), ('three', 3), ('one', 1)])
+OrderedDict([('three', 3), ('two', 2), ('one', 1)])
+С помощью метода move_to_end() мы можем сортировать OrderedDict словарь по ключам.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+letters = OrderedDict(b=2, d=4, a=1, c=3)
+
+for key in sorted(letters):
+    letters.move_to_end(key)
+
+print(letters)
+выводит:
+
+OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 4)])
+
+--------------------------Метод popitem()
+
+Метод popitem() по умолчанию удаляет и возвращает элемент в порядке LIFO (Last-In/First-Out, последний пришел/первый ушел). Другими словами, метод popitem() удаляет элементы с конца словаря.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+
+print(numbers.popitem())
+print(numbers)
+
+print(numbers.popitem())
+print(numbers)
+выводит:
+
+('three', 3)
+OrderedDict([('one', 1), ('two', 2)])
+('two', 2)
+OrderedDict([('one', 1)])
+Если методу popitem() передать необязательный аргумент last=False, то он начнет удалять и возвращать элементы в порядке FIFO (First-In/First-Out, первый пришел/первый ушел).
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+numbers = OrderedDict(one=1, two=2, three=3)
+
+print(numbers.popitem(last=False))
+print(numbers)
+
+print(numbers.popitem(last=False))
+print(numbers)
+выводит:
+
+('one', 1)
+OrderedDict([('two', 2), ('three', 3)])
+('two', 2)
+OrderedDict([('three', 3)])
+-----------------------------------------Сравнение словарей
+При сравнении на равенство обычных словарей (тип dict) порядок расположения их элементов неважен.
+
+Приведенный ниже код:
+
+letters1 = dict(a=1, b=2, c=3, d=4)
+letters2 = {'b': 2, 'a': 1, 'c': 3, 'd': 4}
+letters3 = dict([('a', 1), ('b', 2), ('c', 3), ('d', 4)])
+
+print(letters1 == letters2)
+print(letters1 == letters3)
+выводит:
+
+True
+True
+При сравнение на равенство OrderedDict словарей порядок расположения их элементов важен.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+letters1 = OrderedDict(a=1, b=2, c=3, d=4)
+letters2 = OrderedDict({'b': 2, 'a': 1, 'c': 3, 'd': 4})
+letters3 = OrderedDict([('a', 1), ('b', 2), ('c', 3), ('d', 4)])
+
+print(letters1 == letters2)
+print(letters1 == letters3)
+выводит:
+
+False
+True
+При сравнении на равенство обычного словаря (тип dict) и OrderedDict словаря порядок расположения их элементов неважен.
+
+Приведенный ниже код:
+
+from collections import OrderedDict
+
+letters1 = OrderedDict(a=1, b=2, c=3, d=4)
+letters2 = {'b': 2, 'a': 1, 'c': 3, 'd': 4}
+
+print(letters1 == letters2)
+выводит:
+
+True
