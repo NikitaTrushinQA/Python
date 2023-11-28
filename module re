@@ -641,5 +641,258 @@ print(result)
 ('FOO.100.BAR.200.BAZ30.400', 6)
 
 
+-----------------------------------------------------------------------------------------------------Функция split()-------------------------------------------------------------------
+Как мы знаем, строковый тип данных str содержит метод split(), который разбивает строку текста на подстроки, используя в качестве разделителя переданную строку.
 
+
+print('stepik beegeek       python'.split())             # по умолчанию разбиваем через пробельные символы
+print('aaa,bbbb,ccccc'.split(','))
+print('hello---world---from---beegeek'.split('---'))
+
+выводит:
+
+['stepik', 'beegeek', 'python']
+['aaa', 'bbbb', 'ccccc']
+['hello', 'world', 'from', 'beegeek']
+В модуле re есть более мощная функция split(), работающая аналогичным образом.
+
+Функция re.split() разбивает строку на подстроки, используя регулярное выражение в качестве разделителя, и возвращает подстроки в виде списка.
+
+Аргументы функции:
+
+pattern — шаблон регулярного выражения
+string — строка для поиска
+maxsplit=0 — максимальное количество разбиений (необязательный аргумент)
+flags=0 — один или несколько флагов (необязательный аргумент)
+Приведенный ниже код:
+
+import re
+
+result = re.split(r'[,;.]', 'foo,bar.baz;qux;stepik,beegeek')
+
+print(result)
+разбивает строку на подстроки, используя в качестве разделителя один из трех символов ,, ; или ., и выводит:
+
+['foo', 'bar', 'baz', 'qux', 'stepik', 'beegeek']
+Приведенный ниже код:
+
+import re
+
+result = re.split(r'\s*[,;.]\s*', 'foo,   bar. baz   ;    qux ;  stepik   ,   beegeek')
+
+print(result)
+разбивает строку на подстроки, используя в качестве разделителя один из трех символов ,, ; или ., окруженный любым количеством пробелов, и выводит:
+
+['foo', 'bar', 'baz', 'qux', 'stepik', 'beegeek']
+Если шаблон регулярного выражения содержит группы захвата, то возвращаемый список помимо подстрок также включает в себя эти группы.
+
+Приведенный ниже код:
+
+import re
+
+result1 = re.split(r'\s*([,;.])\s*', 'foo,   bar. baz   ;    qux ;  stepik   ,   beegeek')
+result2 = re.split(r'(\s*[,;.]\s*)', 'foo,   bar. baz   ;    qux ;  stepik   ,   beegeek')
+
+print(result1)
+print(result2)
+выводит:
+
+['foo', ',', 'bar', '.', 'baz', ';', 'qux', ';', 'stepik', ',', 'beegeek']
+['foo', ',   ', 'bar', '. ', 'baz', '   ;    ', 'qux', ' ;  ', 'stepik', '   ,   ', 'beegeek']
+Как мы видим, результирующий список result2 содержит не только подстроки, но и сами группы, соответствующие шаблону регулярного выражения:
+
+',   '
+'. '
+'   ;    '
+' ;  '
+'   ,   '
+Такое поведение может быть полезно, если мы хотим разделить строку на подстроки некоторыми разделителями, затем обработать все полученные подстроки,
+а затем снова собрать строку вместе, используя те же разделители.
+
+
+import re
+
+string = 'foo,bar.baz;  qux;stepik,    beegeek'
+regex = r'(\s*[,;.]\s*)'
+
+result = re.split(regex, string)
+
+for index, value in enumerate(result):
+    if not re.fullmatch(regex, value):
+        result[index] = f'[{value}]'
+
+new_string = ''.join(result)
+
+print(string)
+print(new_string)
+выводит:
+
+foo,bar.baz;  qux;stepik,    beegeek
+[foo],[bar].[baz];  [qux];[stepik],    [beegeek]
+Если нам нужно использовать группы, но мы не хотим, чтобы разделители включались в результирующий список, то можно использовать группы без захвата, используя синтаксис (?:<regex>).
+
+Приведенный ниже код:
+
+import re
+
+result = re.split(r'(?:\s*[,;.]\s*)', 'foo,   bar. baz   ;    qux ;  stepik   ,   beegeek')
+
+print(result)
+выводит:
+
+['foo', 'bar', 'baz', 'qux', 'stepik', 'beegeek']
+Ограничение количества разбиений
+Мы можем использовать необязательный аргумент maxsplit для задания максимального количества разбиений строки.
+
+Приведенный ниже код:
+
+import re
+
+text = 'foo; bar;   baz; qux;   stepik;    beegeek'
+regex = r';\s*'
+
+result1 = re.split(regex, text)
+result2 = re.split(regex, text, maxsplit=2)
+result3 = re.split(regex, text, maxsplit=4)
+
+print(result1)
+print(result2)
+print(result3)
+выводит:
+
+['foo', 'bar', 'baz', 'qux', 'stepik', 'beegeek']
+['foo', 'bar', 'baz; qux;   stepik;    beegeek']
+['foo', 'bar', 'baz', 'qux', 'stepik;    beegeek']
+Как мы видим, последний элемент в результирующем списке — это часть начальной строки, оставшаяся после того, как произошли все разбиения в заданном количестве maxsplit.
+
+Явное указание maxsplit=0 эквивалентно его полному отсутствию. При этом если значение maxsplit является отрицательным числом, то функция re.split() возвращает исходную строку без изменений.
+
+----------------------------------------------------------------------------------------Функция compile()------------------------------------------------------------------------------------
+Модуль re поддерживает возможность предварительной компиляции регулярного выражения в специальный объект, который можно повторно использовать позже. Для этого используется функция compile().
+
+Аргументы функции:
+
+regex — шаблон регулярного выражения
+flags=0 — один или несколько флагов (необязательный аргумент)
+Существует два способа использования скомпилированного объекта регулярного выражения.
+
+1 способ: мы можем его указать в качестве первого аргумента для функций модуля re, вместо шаблона регулярного выражения.
+
+Приведенный ниже код:
+
+import re
+
+regex_obj = re.compile('\d+')
+text = 'ул. Часовая, дом № 25, корпус 2, квартира 69'
+result = re.findall(regex_obj, text)
+
+print(result)
+выводит:
+
+['25', '2', '69']
+ В общем случае:
+
+import re
+
+regex_obj = re.compile(<regex>, <flags>)
+result = re.search(regex_obj, <string>)     # match(), fullmatch(), findall(), finditer()
+2 способ: мы можем вызывать функции как методы непосредственно из объекта регулярного выражения.
+
+Приведенный ниже код:
+
+import re
+
+regex_obj = re.compile('\d+')
+text = 'ул. Часовая, дом № 25, корпус 2, квартира 69'
+result = regex_obj.findall(text)
+
+print(result)
+выводит:
+
+['25', '2', '69']
+ В общем случае:
+
+regex_obj = re.compile(<regex>, <flags>)
+result = regex_obj.search(<string>)         # match(), fullmatch(), findall(), finditer()
+Приведем пример с использованием флага.
+
+Приведенный ниже код:
+
+import re
+
+regex_obj = re.compile('ba[rz]', flags=re.I)
+
+result1 = re.search('ba[rz]', 'FOOBARBAZ', flags=re.I)
+result2 = re.search(regex_obj, 'FOOBARBAZ')
+result3 = regex_obj.search('FOOBARBAZ')
+
+print(result1)
+print(result2)
+print(result3)
+выводит:
+
+<re.Match object; span=(3, 6), match='BAR'>
+<re.Match object; span=(3, 6), match='BAR'>
+<re.Match object; span=(3, 6), match='BAR'>
+Как мы видим, все три объекта result1, result2 и result3 содержат одинаковые значения.
+
+Возникает резонный вопрос: для чего нужна предварительная компиляция? Если мы часто используем одно и то же регулярное выражение,
+то предварительная компиляция позволяет нам отделить определение регулярного выражения от его использования, что повышает читабельность кода.
+
+В приведенном ниже коде:
+
+import re
+
+s1, s2, s3, s4 = 'foo.bar', 'foo123bar', 'baz99', 'qux & grault'
+
+print(re.search('\d+', s1))
+print(re.search('\d+', s2))
+print(re.search('\d+', s3))
+print(re.search('\d+', s4))
+Регулярное выражение \d+ появляется несколько раз. Если в результате поддержки (изменения) кода, мы решим, что нам нужно другое регулярное выражение,
+то нам нужно будет изменить его в каждом месте, что не очень удобно.
+
+Приведенный ниже код, решает эту проблему, делая программный код более удобным в сопровождении:
+
+import re
+
+s1, s2, s3, s4 = 'foo.bar', 'foo123bar', 'baz99', 'qux & grault'
+
+regex_obj = re.compile('\d+')
+
+print(regex_obj.search(s1))
+print(regex_obj.search(s2))
+print(regex_obj.search(s3))
+print(regex_obj.search(s4))
+Методы скомпилированного объекта регулярного выражения
+Скомпилированный объект регулярного выражения поддерживает следующие методы:
+
+search(string, pos, endpos)
+match(string, pos, endpos)
+fullmatch(string, pos, endpos)
+findall(string, pos, endpos)
+finditer(string, pos, endpos)
+Данные методы ведут себя так же, как соответствующие (одноименные) им функции модуля re, за исключением того, что они также поддерживают необязательные аргументы pos и endpos.
+
+Если аргументы pos и endpos переданы, то поиск применяется только к части строки string, от pos (включительно), до endpos (не включительно), подобно индексам в срезах.
+
+Приведенный ниже код:
+
+import re
+
+regex_obj = re.compile('\d+')
+text = 'foo12345barbaz'
+
+print(regex_obj.search(text))
+print(regex_obj.search(text, pos=4))
+print(regex_obj.search(text, endpos=7))
+print(regex_obj.search(text, pos=4, endpos=7))
+выводит:
+
+<re.Match object; span=(3, 8), match='12345'>
+<re.Match object; span=(4, 8), match='2345'>
+<re.Match object; span=(3, 7), match='1234'>
+<re.Match object; span=(4, 7), match='234'>
+Если указать pos, но опустить endpos, то поиск будет применяться к подстроке от pos до конца строки. Аналогично, если указать endpos,
+но опустить pos, то поиск будет применяться к подстроке от начала строки до endpos.
 
